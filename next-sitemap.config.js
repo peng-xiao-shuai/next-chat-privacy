@@ -1,6 +1,6 @@
 const paths = ['/', '/setting', '/setting/theme-change', '/setting/size-change', '/setting/lang-change', '/setting/about', '/setting/about/feedback', '/chat-room']
 /** @type {import('next-sitemap').IConfig} */
-module.exports = {
+export default {
   siteUrl: process.env.NEXT_PUBLIC_SITE_URL,
   generateRobotsTxt: true,
   generateIndexSitemap: false,
@@ -8,9 +8,9 @@ module.exports = {
     const result = []
 
     paths.forEach(item => {
-      const alternateRefs = ['ja-JP', 'zh-TW', 'en-US', 'zh-CN'].map(lng => ({
+      const alternateRefs = ['ja-JP', 'zh-TW', '', 'zh-CN'].map(lng => ({
         href: process.env.NEXT_PUBLIC_SITE_URL + '/' + lng,
-        hreflang: lng,
+        hreflang: lng || 'en-US',
       }))
 
       result.push({
