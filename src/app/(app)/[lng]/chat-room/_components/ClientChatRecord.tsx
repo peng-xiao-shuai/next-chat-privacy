@@ -14,7 +14,11 @@ import {
 import { COMMAND } from './ClientChatPopoverContent';
 import emitter from '@/utils/bus';
 import { cn } from '@/utils/utils';
-import { VariableSizeList, ListChildComponentProps } from 'react-window';
+import {
+  VariableSizeList,
+  ListChildComponentProps,
+  CommonProps,
+} from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { ClientChatRecordContent } from './ClientChatRecordContent';
 import { toast } from 'sonner';
@@ -46,9 +50,7 @@ const Row: FC<ListChildComponentProps<RowData>> = memo(
     if (item.type === MESSAGE_TYPE.SYSTEM) {
       return (
         <div ref={rowRef} style={{ ...style, height: 'auto' }}>
-          <div
-            className="py-2 text-center text-base-content text-opacity-60 text-sm w-full justify-between"
-          >
+          <div className="py-2 text-center text-base-content text-opacity-60 text-sm w-full justify-between">
             {item.msg}
           </div>
         </div>
@@ -162,7 +164,7 @@ const useRowHeights = (chats: Chat[]) => {
 
 export const ClientChatRecords: FC<{
   chats: Chat[];
-  chatScroll: Ref<HTMLDivElement | null>;
+  chatScroll: CommonProps['outerRef'];
   handleScrollBottom: (duration: number, targetHeight?: number) => void;
 }> = memo(({ chats, chatScroll }) => {
   const { t } = useContext(AppContext);
@@ -286,11 +288,11 @@ export const ClientChatRecords: FC<{
   );
 
   return (
-    (<AutoSizer>
+    <AutoSizer>
       {({ height, width }) => {
         return (
           // @ts-ignore
-          (<VariableSizeList<RowData>
+          <VariableSizeList<RowData>
             ref={listRef}
             width={width}
             height={height}
@@ -308,10 +310,10 @@ export const ClientChatRecords: FC<{
           >
             {/* @ts-ignore */}
             {Row}
-          </VariableSizeList>)
+          </VariableSizeList>
         );
       }}
-    </AutoSizer>)
+    </AutoSizer>
   );
 });
 ClientChatRecords.displayName = 'ClientChatRecords';
